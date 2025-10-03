@@ -22,7 +22,7 @@ export default function PerguntaResposta({ pergunta, resposta }) {
   const [categoria, setCategoria] = useState("");
   const respostasDoUsuario =
     safeParseJSON(localStorage.getItem("respostasDoUsuario")) || [];
-  const aceitos = respostas.filter(
+  const acertos = respostas.filter(
     (resposta) => resposta.respostaCorretaId === true
   );
 

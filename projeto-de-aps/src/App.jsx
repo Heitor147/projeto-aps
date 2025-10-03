@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "/styles/App.css";
 import PerguntaResposta from "./components/PerguntaResposta";
+import API from "./components/API";
 // Observação: Os dados de perguntas e respostas são esperados no localStorage,
 // normalmente cadastrados pelo componente PerguntaResposta.
 
@@ -230,6 +231,10 @@ export default function App() {
               </div>
             </div>
           </details>
+
+          <div style={{ marginTop: 16 }}>
+            <API />
+          </div>
         </div>
       )}
     </div>
