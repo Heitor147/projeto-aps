@@ -26,7 +26,7 @@ const TelaInicial = () => {
       localStorage.setItem('jogadorNome', nome) 
 
       // Navega para a tela do Quiz
-      navigate('/jogador/quiz')
+      navigate('/jogador/configurar') 
     }
   }
 

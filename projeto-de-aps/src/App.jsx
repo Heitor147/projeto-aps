@@ -1,10 +1,10 @@
 // src/App.jsx
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-// Importe seus componentes
 import AdminLayout from './components/AdminLayout'
 import TelaInicial from './components/TelaInicial'
 import TelaQuiz from './components/TelaQuiz' // Deve ser criado
+import ConfiguracaoQuiz from './components/ConfiguracaoQuiz'
 import Ranking from './components/Ranking' // Deve ser criado
 import PerguntaResposta from './components/PerguntaResposta' // Deve ser criado
 import Sala from './components/Sala' // Deve ser criado
@@ -17,6 +17,7 @@ const App = () => {
         <Route path="/" element={<TelaInicial />} />
 
         {/* Rotas do Jogador */}
+        <Route path="/jogador/configurar" element={<ConfiguracaoQuiz />} />
         <Route path="/jogador/quiz" element={<TelaQuiz />} />
         <Route path="/jogador/ranking" element={<Ranking />} />
 
