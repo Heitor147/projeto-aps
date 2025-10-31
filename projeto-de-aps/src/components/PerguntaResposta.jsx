@@ -1,10 +1,11 @@
 // src/components/PerguntaResposta.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { FaTrash, FaEdit, FaPlus, FaSave, FaList } from 'react-icons/fa';
+import { FaTrash, FaEdit, FaPlus, FaSave, FaList, FaArrowLeft } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 // Mock de dados para localStorage caso o Supabase falhe ou para teste inicial
-const MOCK_CATEGORIAS = ["Química", "Tecnologia", "História", "Geral"];
+const MOCK_CATEGORIAS = ["Química", "Tecnologia", "História", "Biologia", "Matemática", "Geral"];
 const LOCAL_STORAGE_KEY = 'quiz_admin_perguntas';
 
 // --- Funções CRUD de Perguntas (No Supabase e LocalStorage) ---
@@ -15,7 +16,7 @@ async function fetchPerguntas() {
     const { data, error } = await supabase.from('quiz_admin').select('*');
     if (error) throw error;
     // Se o Supabase funcionar, salva no localStorage como backup
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data)); 
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
     return data;
   } catch (error) {
     console.error("Erro Supabase, usando localStorage:", error.message);
@@ -29,7 +30,7 @@ async function fetchPerguntas() {
 async function savePerguntaToDB(pergunta) {
   try {
     const { id, created_at, ...dataToSave } = pergunta; // Ignora id e created_at na inserção/atualização
-    
+
     let result;
     if (id) {
       // Atualizar
@@ -49,7 +50,7 @@ async function savePerguntaToDB(pergunta) {
     }
 
     if (result.error) throw result.error;
-    
+
     // Atualiza o localStorage após sucesso no Supabase
     const all = await fetchPerguntas(); // Recarrega todas para atualizar o localStorage
     return result.data;
@@ -70,9 +71,9 @@ async function deletePerguntaFromDB(id) {
       .eq('id', id);
 
     if (error) throw error;
-    
+
     // Recarrega todas para atualizar o localStorage
-    await fetchPerguntas(); 
+    await fetchPerguntas();
     return true;
   } catch (error) {
     console.error('Erro ao deletar no Supabase:', error.message);
@@ -84,6 +85,7 @@ async function deletePerguntaFromDB(id) {
 // --- Componente Principal ---
 
 const PerguntaResposta = () => {
+  const navigate = useNavigate();
   const [perguntas, setPerguntas] = useState([]);
   const [currentPergunta, setCurrentPergunta] = useState(null); // Para edição
   const [view, setView] = useState('list'); // 'list' ou 'form'
@@ -156,7 +158,7 @@ const PerguntaResposta = () => {
       return;
     }
     if (respostas.some(r => r.texto.trim() === '')) {
-       alert("Todas as alternativas devem ser preenchidas.");
+      alert("Todas as alternativas devem ser preenchidas.");
       return;
     }
 
@@ -175,17 +177,20 @@ const PerguntaResposta = () => {
       setView('list');
     }
   };
-  
+
   // Renderiza a lista de perguntas
   if (view === 'list') {
     return (
       <div className="tela-container">
         <h2>Lista de Perguntas (CRUD)</h2>
-        <button 
-            onClick={() => { resetForm(); setView('form'); }} 
-            className="botao-principal"
+        <button
+          onClick={() => { resetForm(); setView('form'); }}
+          className="botao-principal"
         >
           <FaPlus /> Adicionar Nova Pergunta
+        </button>
+        <button onClick={() => navigate('/admin/dashboard')} style={{ backgroundColor: '#6c757d' }}>
+          <FaArrowLeft /> Voltar
         </button>
 
         {perguntas.length === 0 ? (
@@ -196,18 +201,18 @@ const PerguntaResposta = () => {
               <li key={p.id} style={{ border: '1px solid #ccc', margin: '10px 0', padding: '10px', borderRadius: '5px', backgroundColor: '#fff' }}>
                 <p><strong>{p.texto}</strong> (Categoria: {p.categoria})</p>
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <button 
-                        onClick={() => handleEdit(p)} 
-                        style={{ backgroundColor: '#2196F3' }}
-                    >
-                        <FaEdit /> Editar
-                    </button>
-                    <button 
-                        onClick={() => handleDelete(p.id)} 
-                        style={{ backgroundColor: '#f44336' }}
-                    >
-                        <FaTrash /> Apagar
-                    </button>
+                  <button
+                    onClick={() => handleEdit(p)}
+                    style={{ backgroundColor: '#2196F3' }}
+                  >
+                    <FaEdit /> Editar
+                  </button>
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    style={{ backgroundColor: '#f44336' }}
+                  >
+                    <FaTrash /> Apagar
+                  </button>
                 </div>
               </li>
             ))}
@@ -221,12 +226,12 @@ const PerguntaResposta = () => {
   return (
     <div className="tela-container">
       <h2>{currentPergunta ? 'Editar Pergunta' : 'Adicionar Nova Pergunta'}</h2>
-      <button 
-          onClick={() => setView('list')} 
-          className="botao-principal"
-          style={{ backgroundColor: '#6c757d' }}
+      <button
+        onClick={() => setView('list')}
+        className="botao-principal"
+        style={{ backgroundColor: '#6c757d' }}
       >
-          <FaList /> Voltar à Lista
+        <FaList /> Voltar à Lista
       </button>
       <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
         <div className="input-group">
@@ -243,9 +248,9 @@ const PerguntaResposta = () => {
 
         <div className="input-group">
           <label htmlFor="categoria">Categoria</label>
-          <select 
-            id="categoria" 
-            value={categoria} 
+          <select
+            id="categoria"
+            value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
             style={{ width: '100%', padding: '10px', marginBottom: '20px' }}
           >
@@ -254,7 +259,7 @@ const PerguntaResposta = () => {
             ))}
           </select>
         </div>
-        
+
         <p><strong>Alternativas:</strong> (Marque a correta abaixo)</p>
         {respostas.map((resposta, index) => (
           <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>

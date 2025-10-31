@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { FaTrophy, FaRedo } from 'react-icons/fa';
+import { FaTrophy, FaRedo, FaArrowLeft } from 'react-icons/fa';
 
 const Ranking = () => {
   const navigate = useNavigate();

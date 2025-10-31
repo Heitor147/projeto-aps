@@ -9,7 +9,7 @@ const GerenciamentoUsuarios = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editingId, setEditingId] = useState(null);
-    const [editData, setEditData] = setEditData(null);
+    const [editData, setEditData] = useState(null);
 
     useEffect(() => {
         fetchUsuarios();

@@ -1,9 +1,11 @@
 // src/components/Sala.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { FaPlus, FaTrash, FaEdit, FaSave, FaUsers } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaEdit, FaSave, FaUsers, FaArrowLeft } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Sala = () => {
+    const navigate = useNavigate();
     const [salas, setSalas] = useState([]);
     const [nomeSala, setNomeSala] = useState('');
     const [isEditing, setIsEditing] = useState(false);
@@ -50,7 +52,7 @@ const Sala = () => {
                 if (error) throw error;
                 alert(`Sala "${nomeSala}" criada!`);
             }
-            
+
             resetForm();
             fetchSalas();
         } catch (error) {
@@ -72,7 +74,7 @@ const Sala = () => {
                     .from('salas')
                     .delete()
                     .eq('id', id);
-                
+
                 if (error) throw error;
                 alert('Sala deletada com sucesso!');
                 fetchSalas();
@@ -92,6 +94,9 @@ const Sala = () => {
     return (
         <div className="tela-container">
             <h2><FaUsers /> Gerenciar Salas Multiplayer</h2>
+            <button onClick={() => navigate('/admin/dashboard')} style={{ backgroundColor: '#6c757d' }}>
+                <FaArrowLeft /> Voltar
+            </button>
 
             {/* Formulário de Criação/Edição */}
             <form onSubmit={handleSave} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
@@ -110,9 +115,9 @@ const Sala = () => {
                     <FaSave /> {isEditing ? 'Salvar Edição' : 'Criar Sala'}
                 </button>
                 {isEditing && (
-                    <button 
-                        onClick={resetForm} 
-                        className="botao-principal" 
+                    <button
+                        onClick={resetForm}
+                        className="botao-principal"
                         style={{ backgroundColor: '#6c757d', marginLeft: '10px' }}
                     >
                         <FaPlus /> Nova Sala
@@ -126,20 +131,20 @@ const Sala = () => {
                 {salas.map(sala => (
                     <li key={sala.id} style={{ border: '1px solid #ddd', margin: '10px 0', padding: '10px', borderRadius: '5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#fff' }}>
                         <div>
-                            <strong>{sala.nome}</strong> 
+                            <strong>{sala.nome}</strong>
                             <span style={{ marginLeft: '10px', color: sala.status === 'Aberto' ? 'green' : 'red' }}>
                                 ({sala.status} - Cap: {sala.capacidade})
                             </span>
                         </div>
                         <div style={{ display: 'flex', gap: '5px' }}>
-                            <button 
-                                onClick={() => handleEdit(sala)} 
+                            <button
+                                onClick={() => handleEdit(sala)}
                                 style={{ backgroundColor: '#2196F3', padding: '8px' }}
                             >
                                 <FaEdit />
                             </button>
-                            <button 
-                                onClick={() => handleDelete(sala.id)} 
+                            <button
+                                onClick={() => handleDelete(sala.id)}
                                 style={{ backgroundColor: '#f44336', padding: '8px' }}
                             >
                                 <FaTrash />

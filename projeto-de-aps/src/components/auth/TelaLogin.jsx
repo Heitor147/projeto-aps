@@ -1,7 +1,7 @@
 // src/components/auth/TelaLogin.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 
 const TelaLogin = () => {
     const navigate = useNavigate();
@@ -66,6 +66,12 @@ const TelaLogin = () => {
                     {loading ? 'Entrando...' : 'Entrar'}
                 </button>
             </form>
+            <button 
+                onClick={() => navigate('/redefinir')} 
+                style={{ marginTop: '10px', backgroundColor: 'transparent', color: '#007bff', border: 'none', padding: '0', cursor: 'pointer' }}
+            >
+                Esqueceu a senha?
+            </button>
             <button onClick={() => navigate('/cadastro')} style={{ marginTop: '10px' }}>
                 Não tenho conta (Cadastrar)
             </button>
