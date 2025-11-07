@@ -1,7 +1,7 @@
 // src/components/admin/AdminDashboard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUsers, FaUser, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaUsers, FaUser, FaQuestionCircle, FaSignOutAlt, FaListAlt } from 'react-icons/fa';
 import { supabase } from '../../supabaseClient';
 
 const AdminDashboard = () => {
@@ -25,6 +25,9 @@ const AdminDashboard = () => {
                 </button>
                 <button className="botao-principal" onClick={() => navigate('/admin/perguntas')} style={{ backgroundColor: '#007bff' }}>
                     <FaQuestionCircle /> Gerenciar Questões
+                </button>
+                <button className="botao-principal" onClick={() => navigate('/admin/categorias')} style={{ backgroundColor: '#ff9800' }}>
+                    <FaListAlt /> Gerenciar Categorias {/* NOVO BOTÃO */}
                 </button>
                 <button className='botao-principal' onClick={() => navigate('/admin/salas')} style={{ backgroundColor: '#009bff'}}>
                     <FaUsers /> Gerenciar Salas

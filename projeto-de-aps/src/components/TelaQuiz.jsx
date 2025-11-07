@@ -73,8 +73,8 @@ const TelaQuiz = () => {
             // Busca perguntas APENAS desta categoria
             const { data: categoriaData, error: categoriaError } = await supabase
               .from('quiz_admin')
-              .select('*')
-              .eq('categoria', categoria);
+              .select('*, categoria_nome:categorias(nome)')
+              .eq('categoria_id', categoria.id)
             
             if (categoriaError) {
               console.error(`Erro ao buscar categoria ${categoria}:`, categoriaError.message);
@@ -92,7 +92,7 @@ const TelaQuiz = () => {
         // Busca TODAS as perguntas e seleciona N_QUESTOES_PADRAO
         const { data: allQuestions, error: allError } = await supabase
           .from('quiz_admin')
-          .select('*');
+          .select('*, categoria_nome:categorias(nome)');
           
         if (allError) {
              console.error('Erro ao buscar todas as perguntas:', allError.message);
@@ -215,7 +215,7 @@ const TelaQuiz = () => {
     <div className="tela-container">
       <h2>Quiz Gincana 2026</h2>
       <p>Questão {perguntaAtualIndex + 1} de {perguntasQuiz.length}</p>
-      <p>Categoria: **{perguntaAtual.categoria}**</p>
+      <p>Categoria: {perguntaAtual.categoria_nome ? perguntaAtual.categoria_nome.nome : 'Carregando...'}</p>
       
       <div style={{ padding: '15px', border: '1px solid #ccc', borderRadius: '8px', marginBottom: '20px', backgroundColor: '#fff' }}>
         <h3>{perguntaAtual.texto}</h3>

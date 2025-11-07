@@ -8,11 +8,12 @@ import RedefinirSenhaConfirmar from './components/auth/RedefinirSenhaConfirmar';
 import TelaCadastro from './components/auth/TelaCadastro';
 import AdminDashboard from './components/admin/AdminDashboard';
 import GerenciamentoUsuarios from './components/admin/GerenciamentoUsuarios';
+import GerenciamentoCategorias from './components/admin/GerenciamentoCategorias';
 import TelaQuiz from './components/TelaQuiz';
 import ConfiguracaoQuiz from './components/ConfiguracaoQuiz';
 import Ranking from './components/Ranking' ;
-import PerguntaResposta from './components/PerguntaResposta';
-import Sala from './components/Sala'
+import PerguntaResposta from './components/admin/PerguntaResposta';
+import Sala from './components/admin/Sala'
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> 
         <Route path="/admin/usuarios" element={<AdminRoute><GerenciamentoUsuarios /></AdminRoute>} />
         <Route path="/admin/perguntas" element={<AdminRoute><PerguntaResposta /></AdminRoute>} />
+        <Route path="/admin/categorias" element={<AdminRoute><GerenciamentoCategorias /></AdminRoute>} />
         <Route path="/admin/salas" element={<AdminRoute><Sala /></AdminRoute>}/>
 
         {/* Rota Padrão (Redireciona para a home) */}
