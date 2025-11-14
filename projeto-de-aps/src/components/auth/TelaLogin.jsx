@@ -12,47 +12,60 @@ const TelaLogin = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
-
-        const { data, error } = await supabase.auth.signInWithPassword({
+    
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
             email,
             password: senha,
         });
-
-        if (error) {
-            alert(`Erro no Login: ${error.message}`);
+    
+        if (authError) {
+            alert(`Erro de login: ${authError.message}`);
             setLoading(false);
             return;
         }
-
-        // Login bem-sucedido. Buscar perfil e verificar se é admin
-        const userId = data.user.id;
+    
+        const userId = authData.user.id;
         
-        const { data: profileData, error: profileError } = await supabase
+        // 1. BUSCAR O PERFIL DO USUÁRIO
+        const { data: perfilData, error: perfilError } = await supabase
             .from('usuarios')
-            .select('nome, admin')
+            .select('nome, admin') // Confirme se a coluna é 'nome' e não outra
             .eq('id', userId)
             .single();
-
-        if (profileError) {
-             console.error('Erro ao buscar perfil:', profileError.message);
-             alert('Erro ao carregar perfil do jogador.');
+    
+        // 2. TRATAMENTO DE ERRO/DADOS NULOS
+        if (perfilError) {
+            console.error('Erro ao buscar perfil:', perfilError.message);
+            alert('Login OK, mas erro ao buscar perfil. O usuário pode ter sido excluído ou não existe na tabela "usuarios".');
+            setLoading(false);
+            return;
+        }
+    
+        if (!perfilData) {
+             // Isso pode acontecer se o Trigger tiver falhado e não criado a linha.
+             alert('Erro: Perfil do usuário não encontrado na tabela "usuarios".');
              setLoading(false);
              return;
         }
-
-        // Salvar dados no localStorage
+        
+        // 3. DEFINIÇÃO ROBUSTA DAS VARIÁVEIS
+        // Usa o valor de perfilData.nome. Se for NULL ou undefined, usa 'Jogador'.
+        const nomeDoPerfilBuscado = perfilData.nome || 'Jogador';
+        const isAdmin = perfilData.admin;
+        
+        // 4. SALVAR NO LOCALSTORAGE
+        localStorage.setItem('jogadorNome', nomeDoPerfilBuscado); 
         localStorage.setItem('jogadorId', userId);
-        localStorage.setItem('jogadorNome', profileData.nome);
-        localStorage.setItem('isAdmin', profileData.admin);
-
-        setLoading(false);
-
-        // Redirecionamento baseado no status de Admin
-        if (profileData.admin) {
-            navigate('/admin/dashboard'); // Redireciona para o painel de administração
+        localStorage.setItem('isAdmin', isAdmin);
+    
+        // 5. Redirecionamento
+        if (isAdmin) {
+            navigate('/admin/dashboard');
         } else {
-            navigate('/jogador/configurar'); // Redireciona para a configuração do quiz
+            navigate('/jogador/configurar');
         }
+    
+        setLoading(false);
     };
 
     return (
@@ -66,8 +79,8 @@ const TelaLogin = () => {
                     {loading ? 'Entrando...' : 'Entrar'}
                 </button>
             </form>
-            <button 
-                onClick={() => navigate('/redefinir')} 
+            <button
+                onClick={() => navigate('/redefinir')}
                 style={{ marginTop: '10px', backgroundColor: 'transparent', color: '#007bff', border: 'none', padding: '0', cursor: 'pointer' }}
             >
                 Esqueceu a senha?

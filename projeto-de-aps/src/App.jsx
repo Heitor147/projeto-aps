@@ -13,7 +13,10 @@ import TelaQuiz from './components/TelaQuiz';
 import ConfiguracaoQuiz from './components/ConfiguracaoQuiz';
 import Ranking from './components/Ranking' ;
 import PerguntaResposta from './components/admin/PerguntaResposta';
-import Sala from './components/admin/Sala'
+import Sala from './components/admin/Sala';
+import SalaDeEspera from './components/SalaDeEspera';
+import SalaQuiz from './components/SalaQuiz';
+import EntrarNaSala from './components/EntrarNaSala'
 
 const App = () => {
   return (
@@ -30,6 +33,7 @@ const App = () => {
         <Route path="/jogador/configurar" element={<ConfiguracaoQuiz />} />
         <Route path="/jogador/quiz" element={<TelaQuiz />} />
         <Route path="/jogador/ranking" element={<Ranking />} />
+        <Route path="/jogador/entrar-sala" element={<EntrarNaSala />} />
 
         {/* Rotas do Administrador - Envolvidas no Layout Admin */}
         {/* Nota: O uso de AdminDashboard aqui é um exemplo simples. */}
@@ -38,6 +42,10 @@ const App = () => {
         <Route path="/admin/perguntas" element={<AdminRoute><PerguntaResposta /></AdminRoute>} />
         <Route path="/admin/categorias" element={<AdminRoute><GerenciamentoCategorias /></AdminRoute>} />
         <Route path="/admin/salas" element={<AdminRoute><Sala /></AdminRoute>}/>
+
+        {/* Rotas Multiplayer */}
+        <Route path="/sala/:salaId/lobby" element={<SalaDeEspera />} />
+        <Route path="/sala/:salaId/quiz" element={<SalaQuiz />} />
 
         {/* Rota Padrão (Redireciona para a home) */}
         <Route path="*" element={<Navigate to="/" />} />
