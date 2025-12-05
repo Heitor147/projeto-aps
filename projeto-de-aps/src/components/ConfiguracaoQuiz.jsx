@@ -1,9 +1,8 @@
-// src/components/ConfiguracaoQuiz.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { FaPlay, FaList } from 'react-icons/fa';
-import { FaDoorOpen, FaUserPlus, FaTrophy } from 'react-icons/fa'
+import { FaDoorOpen, FaSignOutAlt, FaUserPlus, FaTrophy } from 'react-icons/fa'
 
 // Total de questões fixo para validação
 const N_QUESTOES_MIN = 5;
@@ -15,6 +14,7 @@ const ConfiguracaoQuiz = () => {
     const [configuracaoCategorias, setConfiguracaoCategorias] = useState({}); // { 'Química': 0, 'História': 0, ... }
     const [totalPerguntas, setTotalPerguntas] = useState(0);
     const [loading, setLoading] = useState(true);
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
     const jogadorNome = localStorage.getItem('jogadorNome') || 'Jogador';
 
     useEffect(() => {
@@ -80,11 +80,31 @@ const ConfiguracaoQuiz = () => {
         return <div className="tela-container"><h2>Carregando configurações...</h2></div>;
     }
 
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        localStorage.clear();
+        navigate('/');
+    };
+
     return (
         <div className="tela-container">
             <h2>{jogadorNome}, pronto para a Gincana?</h2>
 
+
             <div style={{ display: 'flex', gap: '20px', marginBottom: '30px', justifyContent: 'center' }}>
+                {/* --- NOVO BLOCO DO ADMINISTRADOR --- */}
+                {isAdmin && (
+                    <div className="admin-access-container">
+                        {/* Botão para redirecionar para o painel admin */}
+                        <button
+                            onClick={() => navigate('/admin/dashboard')}
+                            style={{ margin: '15px 0', padding: '10px 20px', backgroundColor: '#FFD700', color: '#333', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}
+                        >
+                            👑 Acessar Painel Admin
+                        </button>
+                    </div>
+                )}
+
                 {/* NOVO BOTÃO MULTIPLAYER */}
                 <button
                     onClick={() => navigate('/jogador/entrar-sala')}
@@ -105,7 +125,7 @@ const ConfiguracaoQuiz = () => {
             </div>
 
             <h2>Configurar Quiz</h2>
-            <p>Selecione a quantidade de questões que deseja em cada categoria. Total de questões deve ser entre **{N_QUESTOES_MIN}** e **{N_QUESTOES_MAX}**.</p>
+            <p>Selecione a quantidade de questões que deseja em cada categoria. Total de questões deve ser entre {N_QUESTOES_MIN} e {N_QUESTOES_MAX}.</p>
 
             <div style={{ padding: '15px', border: '1px solid #ccc', borderRadius: '8px', marginBottom: '20px', backgroundColor: '#fff' }}>
                 <p>Total Selecionado: <strong>{totalPerguntas}</strong></p>
@@ -137,6 +157,10 @@ const ConfiguracaoQuiz = () => {
             <p style={{ marginTop: '20px' }}>Não quer configurar? <button onClick={() => { localStorage.removeItem('quizConfig'); navigate('/jogador/quiz'); }} className="botao-principal" style={{ backgroundColor: '#007bff' }}>
                 <FaList /> Modo Aleatório (20 questões)
             </button></p>
+
+            <button onClick={handleLogout} style={{ marginTop: '50px', backgroundColor: '#dc3545' }}>
+                <FaSignOutAlt /> Sair
+            </button>
         </div>
     );
 };

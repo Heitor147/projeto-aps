@@ -114,8 +114,6 @@ const TelaQuiz = () => {
       }
       
       setPerguntasQuiz(selectedQuestions);
-      // FIM DA NOVA LÓGICA DE SELEÇÃO POR CATEGORIA
-      // ----------------------------------------------------
       
       // B. Registrar Tentativa no Supabase
       const { data: tentativaData, error: tentativaError } = await supabase

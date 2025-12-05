@@ -1,7 +1,6 @@
-// src/components/admin/AdminDashboard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUsers, FaUser, FaQuestionCircle, FaSignOutAlt, FaListAlt } from 'react-icons/fa';
+import { FaUsers, FaUser, FaQuestionCircle, FaSignOutAlt, FaListAlt, FaArrowLeft } from 'react-icons/fa';
 import { supabase } from '../../supabaseClient';
 
 const AdminDashboard = () => {
@@ -18,7 +17,11 @@ const AdminDashboard = () => {
         <div className="tela-container">
             <h2>Painel de Administração</h2>
             <p>Bem-vindo, {adminNome}!</p>
-            
+
+            <button onClick={() => navigate('/jogador/configurar')} style={{ marginBottom: '20px', backgroundColor: '#6c757d' }}>
+                <FaArrowLeft /> Voltar
+            </button>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '30px' }}>
                 <button className="botao-principal" onClick={() => navigate('/admin/usuarios')}>
                     <FaUser /> Gerenciar Usuários

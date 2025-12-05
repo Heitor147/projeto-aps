@@ -1,4 +1,3 @@
-// src/components/SalaQuiz.jsx (Esqueleto)
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useParams, useNavigate } from 'react-router-dom';

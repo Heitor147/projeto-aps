@@ -1,4 +1,3 @@
-// src/components/admin/PerguntaRespostas.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { useNavigate } from 'react-router-dom';

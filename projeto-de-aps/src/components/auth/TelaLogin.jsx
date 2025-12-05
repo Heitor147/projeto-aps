@@ -1,4 +1,3 @@
-// src/components/auth/TelaLogin.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
@@ -12,27 +11,27 @@ const TelaLogin = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
-    
+
         const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
             email,
             password: senha,
         });
-    
+
         if (authError) {
             alert(`Erro de login: ${authError.message}`);
             setLoading(false);
             return;
         }
-    
+
         const userId = authData.user.id;
-        
+
         // 1. BUSCAR O PERFIL DO USUÁRIO
         const { data: perfilData, error: perfilError } = await supabase
             .from('usuarios')
             .select('nome, admin') // Confirme se a coluna é 'nome' e não outra
             .eq('id', userId)
             .single();
-    
+
         // 2. TRATAMENTO DE ERRO/DADOS NULOS
         if (perfilError) {
             console.error('Erro ao buscar perfil:', perfilError.message);
@@ -40,31 +39,28 @@ const TelaLogin = () => {
             setLoading(false);
             return;
         }
-    
+
         if (!perfilData) {
-             // Isso pode acontecer se o Trigger tiver falhado e não criado a linha.
-             alert('Erro: Perfil do usuário não encontrado na tabela "usuarios".');
-             setLoading(false);
-             return;
+            // Isso pode acontecer se o Trigger tiver falhado e não criado a linha.
+            alert('Erro: Perfil do usuário não encontrado na tabela "usuarios".');
+            setLoading(false);
+            return;
         }
-        
+
         // 3. DEFINIÇÃO ROBUSTA DAS VARIÁVEIS
         // Usa o valor de perfilData.nome. Se for NULL ou undefined, usa 'Jogador'.
         const nomeDoPerfilBuscado = perfilData.nome || 'Jogador';
         const isAdmin = perfilData.admin;
-        
+
         // 4. SALVAR NO LOCALSTORAGE
-        localStorage.setItem('jogadorNome', nomeDoPerfilBuscado); 
+        localStorage.setItem('jogadorNome', nomeDoPerfilBuscado);
         localStorage.setItem('jogadorId', userId);
         localStorage.setItem('isAdmin', isAdmin);
-    
+
         // 5. Redirecionamento
-        if (isAdmin) {
-            navigate('/admin/dashboard');
-        } else {
-            navigate('/jogador/configurar');
-        }
-    
+        // Agora, ambos (admin e jogador) vão para a mesma tela de configuração.
+        navigate('/jogador/configurar');
+
         setLoading(false);
     };
 

@@ -1,4 +1,3 @@
-// src/components/Sala.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { FaPlus, FaTrash, FaEdit, FaSave, FaUsers, FaArrowLeft } from 'react-icons/fa';

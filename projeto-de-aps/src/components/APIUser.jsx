@@ -1,4 +1,3 @@
-// src/components/APIUser.jsx
 import { supabase } from '../supabaseClient'
 
 /**

@@ -1,4 +1,3 @@
-// src/components/admin/GerenciamentoUsuarios.jsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { FaEdit, FaTrash, FaCheck, FaTimes, FaSpinner, FaArrowLeft } from 'react-icons/fa';
