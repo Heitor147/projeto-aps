@@ -2,8 +2,7 @@
 
 /* Definição da cor verde para botões */
 :root {
-  --cor-botao-principal: #4CAF50;
-  /* Verde */
+  --cor-botao-principal: #4CAF50; /* Verde */
   --cor-texto-botao: white;
 }
 
@@ -19,23 +18,20 @@ button,
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
-  display: block;
-  /* Para alinhar o ícone */
+  display: inline-flex; /* Para alinhar o ícone */
   align-items: center;
-  gap: 8px;
+  gap: 8px; /* Espaço entre texto e ícone */
 }
 
 button:hover,
 .botao-principal:hover {
-  background-color: #45a049;
-  /* Verde um pouco mais escuro */
+  background-color: #45a049; /* Verde um pouco mais escuro */
 }
 
 /* Estilos de layout base */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  /* Fundo cinza suave */
+  background-color: #f0f0f0; /* Fundo cinza suave */
   margin: 0;
   padding: 0;
 }
@@ -49,19 +45,19 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
 .input-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
 
-input,
-select {
-  width: 50%;
-  /* Reduzindo a largura dos campos */
-  padding: 8px;
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Garante que o padding não aumente o width total */
 }
+
+/* Você deve importar esta folha de estilo no seu src/index.js */
