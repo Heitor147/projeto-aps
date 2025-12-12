@@ -66,7 +66,8 @@ const TelaLogin = () => {
 
     return (
         <div className="tela-container">
-            <h2>Login Quiz Gincana</h2>
+            <h2>Quiz Gincana 2026</h2>
+            <p>Seja bem-vindo ao Quiz da Gincana 2026! Aqui, reunimos diversas questões sobre assuntos variados, desde tecnologia até história e química. Insira seus dados abaixo e comece a jogar.</p>
             <form onSubmit={handleLogin}>
                 <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} required />
