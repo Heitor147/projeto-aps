@@ -1,10 +1,14 @@
 {
   "name": "projeto-de-aps",
+  "homepage": "https://heitor147.github.io/projeto-aps",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
